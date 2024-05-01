@@ -2,6 +2,10 @@
 
 namespace BILab.Domain.Models.Entities {
     public class Procedure : IBaseEntity<Guid> {
+        public Procedure() {
+            Records = new HashSet<Record>();
+        }
+
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -10,5 +14,6 @@ namespace BILab.Domain.Models.Entities {
         public Guid? SpecialOfferId { get; set; }
 
         public SpecialOffer? SpecialOffer { get; set; }
+        public ICollection<Record> Records { get; set; }
     }
 }

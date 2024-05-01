@@ -15,6 +15,11 @@ namespace BILab.DataAccess.EntitiesConfigurations {
                 .WithMany(x => x.Records)
                 .HasForeignKey(x => x.AdressId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Procedure)
+                .WithMany(x => x.Records)
+                .HasForeignKey(x => x.ProcedureId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

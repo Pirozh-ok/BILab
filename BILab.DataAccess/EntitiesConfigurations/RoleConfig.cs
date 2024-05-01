@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BILab.DataAccess.EntitiesConfigurations {
-    public class RoleConfig : IEntityTypeConfiguration<ApplicationRole> {
-        public void Configure(EntityTypeBuilder<ApplicationRole> builder) {
+    public class RoleConfig : IEntityTypeConfiguration<Role> {
+        public void Configure(EntityTypeBuilder<Role> builder) {
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
@@ -21,19 +21,19 @@ namespace BILab.DataAccess.EntitiesConfigurations {
                 .HasForeignKey(x => x.RoleId);
 
             builder.HasData(
-                new ApplicationRole {
+                new Role {
                     Id = Guid.NewGuid(),
                     Name = Constants.NameRoleAdmin,
                     NormalizedName = Constants.NameRoleAdmin.ToUpper()
                 },
 
-                new ApplicationRole {
+                new Role {
                     Id = Guid.NewGuid(),
                     Name = Constants.NameRoleUser,
                     NormalizedName = Constants.NameRoleUser.ToUpper()
                 },
 
-                new ApplicationRole {
+                new Role {
                     Id = Guid.NewGuid(),
                     Name = Constants.NameRoleCustomer,
                     NormalizedName = Constants.NameRoleCustomer.ToUpper()

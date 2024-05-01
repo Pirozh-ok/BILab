@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  web-app:
+    container_name: BILabWeb
+    ports:
+      - "44374:80"
+    build:
+      context: .
+      dockerfile: ./BILab/Dockerfile
+    networks:
+      - app-network
+
+  main_db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 4022:1433
+    volumes:
+      - ./mssql/data/db:/var/lib/mssqlql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=gklJ0NAuJk4Ee6g
+  
+networks:
+  app-network:
+    driver: bridge
+  

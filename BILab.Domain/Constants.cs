@@ -12,5 +12,7 @@
         public const int MinLenOfPassword = 6;
         public const uint MinMinAge = 0;
         public const uint MaxMinAge = 18;
+        public const int MaxLenOfDetail = 1000;
+        public const int MaxLenOfDescription = 1000;
     }
 }
