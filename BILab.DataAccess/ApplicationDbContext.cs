@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 
 namespace BILab.DataAccess {
-    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid> {
+    public class ApplicationDbContext : IdentityDbContext<User, Role, Guid> {
         public ApplicationDbContext() {
         }
 

@@ -49,7 +49,7 @@ namespace BILab.DataAccess.EntitiesConfigurations {
             builder.HasMany(x => x.EmployeeRecords)
                 .WithOne(x => x.Employer)
                 .HasForeignKey(x => x.EmployerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(x => x.Shedules)
                 .WithOne(x => x.User)
