@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BILab.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240503153505_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240504120237_AddedAdditionalFields")]
+    partial class AddedAdditionalFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,9 @@ namespace BILab.DataAccess.Migrations
                     b.Property<Guid>("AdressId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CancelingReasone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -104,6 +107,12 @@ namespace BILab.DataAccess.Migrations
 
                     b.Property<Guid>("EmployerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("ProcedureId")
                         .HasColumnType("uniqueidentifier");
@@ -152,21 +161,21 @@ namespace BILab.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7dca340b-1f1d-44ba-ad17-1acc1e8956d5"),
+                            Id = new Guid("29ba59b1-1aa2-47af-8976-b21a02a9c135"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("ec2c58f5-fe2f-43bc-bdef-ae69fa47b75e"),
+                            Id = new Guid("b40fd890-fc1f-4fdf-83d4-19565f119e72"),
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = new Guid("41d9a3d6-3383-4661-8eec-608f37526898"),
-                            Name = "Customer",
-                            NormalizedName = "CUSTOMER"
+                            Id = new Guid("c6219dea-fb63-456e-87af-0605f2007611"),
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
                         });
                 });
 
@@ -249,10 +258,15 @@ namespace BILab.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -261,7 +275,8 @@ namespace BILab.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -296,7 +311,11 @@ namespace BILab.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -317,6 +336,7 @@ namespace BILab.DataAccess.Migrations
                         .HasDefaultValue("");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -333,6 +353,11 @@ namespace BILab.DataAccess.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Sex")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2);
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -341,6 +366,8 @@ namespace BILab.DataAccess.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -497,7 +524,7 @@ namespace BILab.DataAccess.Migrations
                     b.HasOne("BILab.Domain.Models.Entities.User", "Employer")
                         .WithMany("EmployeeRecords")
                         .HasForeignKey("EmployerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BILab.Domain.Models.Entities.Procedure", "Procedure")

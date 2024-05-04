@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BILab.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -300,7 +300,7 @@ namespace BILab.DataAccess.Migrations
                         column: x => x.EmployerId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -308,9 +308,9 @@ namespace BILab.DataAccess.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("41d9a3d6-3383-4661-8eec-608f37526898"), null, "Customer", "CUSTOMER" },
-                    { new Guid("7dca340b-1f1d-44ba-ad17-1acc1e8956d5"), null, "Admin", "ADMIN" },
-                    { new Guid("ec2c58f5-fe2f-43bc-bdef-ae69fa47b75e"), null, "User", "USER" }
+                    { new Guid("315959d1-9360-4528-b49c-0eaa789dd2c7"), null, "User", "USER" },
+                    { new Guid("71cda961-c36f-4ac2-97e0-fee37e98fe19"), null, "Admin", "ADMIN" },
+                    { new Guid("9dd77781-11be-4ef7-af5f-a8f484dad584"), null, "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -2,7 +2,7 @@
     public class Constants {
         public const string NameRoleUser = "User";
         public const string NameRoleAdmin = "Admin";
-        public const string NameRoleCustomer = "Customer";
+        public const string NameRoleEmployee = "Employee";
 
         public const int MaxLenOfName = 50;
         public const int MinLenOfName = 3;

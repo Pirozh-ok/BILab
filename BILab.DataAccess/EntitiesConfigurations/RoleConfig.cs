@@ -35,8 +35,8 @@ namespace BILab.DataAccess.EntitiesConfigurations {
 
                 new Role {
                     Id = Guid.NewGuid(),
-                    Name = Constants.NameRoleCustomer,
-                    NormalizedName = Constants.NameRoleCustomer.ToUpper()
+                    Name = Constants.NameRoleEmployee,
+                    NormalizedName = Constants.NameRoleEmployee.ToUpper()
                 });
         }
     }

@@ -33,7 +33,7 @@
         }
 
         public static ServiceResult InternalServerError() {
-            return Fail("Internal server error");
+            return Fail(ResponseConstants.InternalServerError);
         }
     }
 
@@ -56,7 +56,7 @@
         }
 
         public static ServiceResult<T> InternalServerError() {
-            return new ServiceResult<T>(false, "Internal server error");
+            return new ServiceResult<T>(false, ResponseConstants.InternalServerError);
         }
     }
 }

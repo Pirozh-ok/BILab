@@ -9,6 +9,9 @@ namespace BILab.Domain.Models.Entities {
         public Guid CustomerId { get; set; }
         public Guid EmployerId { get; set; }
         public Guid AdressId { get; set; }
+        public bool IsClosed { get; set; } = false;
+        public bool IsCanceled { get; set; } = false;
+        public string? CancelingReasone { get; set; }
 
         public Procedure Procedure { get; set; }
         public User Customer { get; set; }

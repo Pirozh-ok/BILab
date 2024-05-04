@@ -1,4 +1,5 @@
 ﻿using BILab.Domain;
+using BILab.Domain.Enums;
 using BILab.Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -33,6 +34,13 @@ namespace BILab.DataAccess.EntitiesConfigurations {
             builder.Property(x => x.DateOfBirth)
                 .IsRequired();
 
+            builder.Property(x => x.PhoneNumber)
+                .IsRequired();
+
+            builder.Property(x => x.Sex)
+                .HasDefaultValue(Sex.Undefined)
+                .IsRequired();
+
             builder
                 .HasMany(x => x.UserRoles)
                 .WithOne(x => x.User)
@@ -55,6 +63,27 @@ namespace BILab.DataAccess.EntitiesConfigurations {
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(x => x.IsDeleted);
+
+            builder.Property(x => x.CreatedAt)
+                .ValueGeneratedOnUpdateSometimes();
+
+            builder.Property(x => x.CreatedBy)
+                .HasMaxLength(50)
+                .HasDefaultValue(string.Empty)
+                .ValueGeneratedOnUpdateSometimes()
+                .IsRequired();
+
+            builder.Property(x => x.ModifiedBy)
+                .HasMaxLength(50)
+                .HasDefaultValue(string.Empty)
+                .IsRequired();
+
+            builder.Property(x => x.DeletedBy)
+                .HasMaxLength(50)
+                .IsRequired(false);
+
+            builder.HasQueryFilter(x => !x.IsDeleted);
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿namespace BILab.Domain.Contracts {
-    public interface IBaseEntityService<TKey, TEntityDto> {
+﻿namespace BILab.Domain.Contracts.Services.Base
+{
+    public interface IBaseEntityService<TKey, TEntityDto>
+    {
         public Task<ServiceResult> CreateAsync(TEntityDto createDto);
         public Task<ServiceResult> DeleteAsync(TKey id);
         public Task<ServiceResult> UpdateAsync(TEntityDto updateDto);

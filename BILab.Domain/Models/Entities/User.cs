@@ -1,4 +1,5 @@
 ﻿using BILab.Domain.Contracts.Models;
+using BILab.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace BILab.Domain.Models.Entities {
@@ -14,6 +15,7 @@ namespace BILab.Domain.Models.Entities {
         public string LastName { get; set; }
         public string Patronymic { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public Sex Sex { get; set; } = Sex.Undefined;
         public DateTime CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime ModifiedAt { get; set; }
