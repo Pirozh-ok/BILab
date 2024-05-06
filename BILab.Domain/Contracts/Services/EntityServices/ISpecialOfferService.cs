@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BILab.Domain.Contracts.Services.Base;
+using BILab.Domain.DTOs.SpecialOffer;
 
-namespace BILab.Domain.Contracts.Services.EntityServices
-{
-    internal interface ISpecialOfferService
+namespace BILab.Domain.Contracts.Services.EntityServices {
+    public interface ISpecialOfferService : IBaseEntityService<Guid, SpecialOfferDTO>
     {
     }
 }

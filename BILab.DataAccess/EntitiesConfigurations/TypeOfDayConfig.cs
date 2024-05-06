@@ -22,6 +22,18 @@ namespace BILab.DataAccess.EntitiesConfigurations {
                 .WithOne(x => x.TypeOfDay)
                 .HasForeignKey(x => x.TypeOfDayId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasData(new TypeOfDay() {
+                Id = Guid.NewGuid(),
+                Name = "Рабочий"
+            },
+            builder.HasData(new TypeOfDay() {
+                Id = Guid.NewGuid(),
+                Name = "Выходной"
+            }, builder.HasData(new TypeOfDay() {
+                Id = Guid.NewGuid(),
+                Name = "Больничный"
+            })));
         }
     }
 }

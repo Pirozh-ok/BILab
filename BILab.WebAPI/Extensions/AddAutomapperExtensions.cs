@@ -7,7 +7,8 @@ namespace BILab.Web.Extensions {
                 typeof(AdressProfile),
                 typeof(RoleProfile),
                 typeof(SheduleProfile),
-                typeof(UserProfile));
+                typeof(UserProfile),
+                typeof(SpecialOfferProfile));
         }
     }
 }

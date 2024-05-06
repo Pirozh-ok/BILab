@@ -1,4 +1,6 @@
 ﻿using BILab.DataAccess;
+using BILab.Domain.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BILab.Web.Extensions {
@@ -7,6 +9,14 @@ namespace BILab.Web.Extensions {
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlServer(connectionString);
             });
+        }
+
+        public static async Task SeedDataAsync(this IServiceCollection services) {
+            var provider = services.BuildServiceProvider();
+            var userManager = provider.GetRequiredService<UserManager<User>>();
+
+            var seedData = new SeedData(userManager);
+            await seedData.SeedUsers();
         }
     }
 }

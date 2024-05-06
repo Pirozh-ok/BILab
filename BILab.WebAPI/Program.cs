@@ -31,6 +31,9 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options => {
 
 var app = builder.Build();
 
+// Seed necessary data
+await builder.Services.SeedDataAsync();
+
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();

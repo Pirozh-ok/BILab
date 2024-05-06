@@ -146,7 +146,9 @@ namespace BILab.BusinessLogic.Services.EntityServices
         }
 
         protected override ServiceResult Validate(UserDTO dto) {
-            throw new NotImplementedException();
+            //TODO: Add validation of Sex;
+
+            return ServiceResult.Ok();
         }
     }
 }
