@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BILab.Domain.Contracts.Services.Base;
+using BILab.Domain.DTOs.Shedule;
 
-namespace BILab.Domain.Contracts.Services.EntityServices
-{
-    internal interface ISheduleService
+namespace BILab.Domain.Contracts.Services.EntityServices {
+    public interface ISheduleService : IBaseEntityService<Guid, SheduleDTO>
     {
     }
 }

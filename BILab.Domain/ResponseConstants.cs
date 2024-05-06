@@ -12,9 +12,11 @@
         public const string EmailLessMinLen = "Invalid email value. The minimum length of the email is 2";
         public const string EmailNotFound = "The user's email was not found";
         public const string EmailPasswordChanged = "Your account password has been changed";
-        public const string FailedRegister = "Failed to register, try again later"; 
+        public const string FailedRegister = "Failed to register, try again later";
         public const string FirstNameExceedsMaxLen = "Invalid first name value. The length of the user first name should not exceed 50 characters";
         public const string FirstNameLessMinLen = "Invalid first name value. The minimum length of the first name  is 2";
+        public const string NameExceedsMaxLen = "Invalid name value. The length of the name should not exceed 50 characters";
+        public const string NameLessMinLen = "Invalid name value. The minimum length of the name  is 2";
         public const string IdIsRequired = "Id is required";
         public const string IncorrectDateOfBirth = "Incorrect date of birth value";
         public const string InvalidEmailOrPassword = "Invalid email address or password";
@@ -47,5 +49,18 @@
         public const string Created = "Entity created";
         public const string Deleted = "Entity deleted";
         public const string Updated = "Entity updated";
+
+        //Roles messages
+        public const string RoleNameExceedMaxLen = "Role name exceeds the maximum allowed length {0}";
+        public const string RoleNameLessMinLen = "Role name is less than the minimum allowed length {0}";
+        public const string RoleNotFound = "Role not found";
+        public const string RoleNullOrEmptyName = "Role name must not be null or empty";
+        public const string RoleAddedToUser = "Roles have been successfully added to the user";
+        public const string RoleChanged = "Role name changed";
+        public const string RoleCreated = "Role created successfully";
+        public const string RoleDeleted = "RoleDeleted";
+        public const string RoleNotExist = "Role named {0} does not exist.";
+        public const string RoleRemovedFromUser = "Roles have been successfully removed from the user";
+        public const string RoleUpdated = "Role updated successfully";
     }
 }

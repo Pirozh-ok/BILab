@@ -1,17 +1,17 @@
 version: "3"
 
 services:
-  web-app:
-    container_name: BILabWeb
-    ports:
-      - "44374:80"
-    build:
-      context: .
-      dockerfile: ./BILab/Dockerfile
-    networks:
-      - app-network
+  # web-app:
+  #   container_name: BILabWeb
+  #   ports:
+  #     - "44320:80"
+  #   build:
+  #     context: .
+  #     dockerfile: ./BILab.WebAPI/Dockerfile
+  #   networks:
+  #     - app-network
 
-  main_db:
+  db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
       - 4022:1433
