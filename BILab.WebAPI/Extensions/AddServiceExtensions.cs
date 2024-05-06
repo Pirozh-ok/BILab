@@ -13,6 +13,7 @@ namespace BILab.Web.Extensions {
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IAccessService, AccessService>();
             services.AddTransient<ISpecialOfferService, SpecialOfferService>();
+            services.AddTransient<ITypeOfDayService, TypeOfDayService>();
         }
     }
 }

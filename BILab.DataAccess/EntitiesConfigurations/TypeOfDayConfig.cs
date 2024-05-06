@@ -24,14 +24,14 @@ namespace BILab.DataAccess.EntitiesConfigurations {
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(new TypeOfDay() {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("6b82916e-57a2-41f7-90ee-f9e92f71a2aa"),
                 Name = "Рабочий"
             },
             builder.HasData(new TypeOfDay() {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("b7a016ca-5ab7-45ab-9803-7ec57355ad70"),
                 Name = "Выходной"
             }, builder.HasData(new TypeOfDay() {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("81febc80-59ad-47e9-979d-25f685c4dda4"),
                 Name = "Больничный"
             })));
         }
