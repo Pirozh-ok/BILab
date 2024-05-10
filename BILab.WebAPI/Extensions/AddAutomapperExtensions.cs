@@ -9,7 +9,9 @@ namespace BILab.Web.Extensions {
                 typeof(SheduleProfile),
                 typeof(UserProfile),
                 typeof(SpecialOfferProfile),
-                typeof(TypeOfDayProfile));
+                typeof(TypeOfDayProfile),
+                typeof(ProcedureProfile),
+                typeof(RecordProfile));
         }
     }
 }

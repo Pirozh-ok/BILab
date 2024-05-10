@@ -23,6 +23,7 @@ namespace BILab.DataAccess {
                     Sex = Domain.Enums.Sex.Male,
                     DateOfBirth = new DateTime(2002, 05, 31),
                     RegisterDate = DateTime.Now,
+                    PhoneNumber = "+79149845637"
                 };
 
                 var result = await _userManager.CreateAsync(user, "password");

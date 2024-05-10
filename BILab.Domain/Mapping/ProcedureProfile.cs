@@ -1,0 +1,12 @@
+﻿using AutoMapper;
+using BILab.Domain.DTOs.Procedure;
+using BILab.Domain.Models.Entities;
+
+namespace BILab.Domain.Mapping {
+    public class ProcedureProfile : Profile {
+        public ProcedureProfile() {
+            CreateMap<ProcedureDTO, Procedure>().ReverseMap();
+            CreateMap<Procedure, GetProcedureDTO>();
+        }
+    }
+}

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BILab.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240504120237_AddedAdditionalFields")]
-    partial class AddedAdditionalFields
+    [Migration("20240510110853_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,19 +161,19 @@ namespace BILab.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("29ba59b1-1aa2-47af-8976-b21a02a9c135"),
+                            Id = new Guid("794afb94-66b1-4a81-8e3a-7ab7e06b915b"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("b40fd890-fc1f-4fdf-83d4-19565f119e72"),
+                            Id = new Guid("10f24f3e-cf6c-4744-a3ad-4af88befdd9e"),
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = new Guid("c6219dea-fb63-456e-87af-0605f2007611"),
+                            Id = new Guid("9df9dc83-7264-49ac-a851-a57095de109f"),
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -250,33 +250,17 @@ namespace BILab.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AvatarPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -306,16 +290,6 @@ namespace BILab.DataAccess.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 namespace BILab.Web.Extensions {
     public static class AddIdentityExtensions {
         public static void AddIdentitySettings(this IServiceCollection services) {
+            var allowChars = new int[255];
+
             services.AddIdentity<User, Role>(opts => {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 6;

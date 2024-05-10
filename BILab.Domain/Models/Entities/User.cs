@@ -3,12 +3,14 @@ using BILab.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace BILab.Domain.Models.Entities {
-    public class User : IdentityUser<Guid>, IAuditableEntity {
+    public class User : IdentityUser<Guid>, IBaseEntity<Guid> {
         public User() {
             Shedules = new HashSet<Shedule>();
             UserRoles = new HashSet<ApplicationUserRole>();
             CustomerRecords = new HashSet<Record>();
             EmployeeRecords = new HashSet<Record>();
+
+            UserName = $"user{DateTime.Now.Millisecond}{DateTime.Now.Second}";
         }
 
         public string FirstName { get; set; }
@@ -16,17 +18,12 @@ namespace BILab.Domain.Models.Entities {
         public string Patronymic { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Sex Sex { get; set; } = Sex.Undefined;
-        public DateTime CreatedAt { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime ModifiedAt { get; set; }
-        public string? ModifiedBy { get; set; }
         public DateTime? DeletedAt { get; set; }
-        public string? DeletedBy { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public DateTime RegisterDate { get; set; }
         public Guid? RefreshToken { get; set; }
         public DateTime? ExpirationAt { get; set; }
-        public string AvatarPath { get; set; }
+        public string? AvatarPath { get; set; }
 
         public virtual ICollection<Shedule> Shedules { get; set; }
 

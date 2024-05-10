@@ -18,6 +18,8 @@
         public const string NameExceedsMaxLen = "Invalid name value. The length of the name should not exceed 50 characters";
         public const string NameLessMinLen = "Invalid name value. The minimum length of the name  is 2";
         public const string IdIsRequired = "Id is required";
+        public const string IncorrectedSex = "Sex is incorrected";
+        public const string IncorrectPhoneNumber = "Phone number is incorrected";
         public const string IncorrectDateOfBirth = "Incorrect date of birth value";
         public const string InvalidEmailOrPassword = "Invalid email address or password";
         public const string LastNameExceedsMaxLen = "Invalid last name value. The length of the user last name should not exceed 50 characters";
@@ -31,8 +33,9 @@
         public const string PatronymicLessMinLen = "Invalid patronymic value. The minimum length of the patronymic is 2";
         public const string SubjectConfirmEmail = "Confirm your account";
         public const string SubjectPasswordChanged = "Password changed";
-        public const string TextConfirmEmail = "Hi {0}!&lt;br&gt;You have been sent this email because you created an account on BILab.&lt;br&gt;Please confirm your account by clicking this link: {1}";
-        public const string TextResetEmail = "Hi {0}!&lt;br&gt;You have received this email because you have started password recovery. If it wasn't you, ignore this email.&lt;br&gt;To reset password clicking this link: {1}";
+        public const string SubjectResetPassword = "Reset password";
+        public const string TextConfirmEmail = "Hi {0}! &lt;br&gt; You have been sent this email because you created an account on BILab .&lt;br&gt; Please confirm your account by clicking this link: {1}";
+        public const string TextResetEmail = "Hi {0}! &lt;br&gt; You have received this email because you have started password recovery. If it wasn't you, ignore this email. &lt;br&gt; To reset password clicking this link: {1}";
         //public const string UserNotFound = "";
         //public const string UserNotFound = "";
         //public const string UserNotFound = "";

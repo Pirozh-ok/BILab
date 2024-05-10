@@ -76,17 +76,13 @@ namespace BILab.DataAccess.Migrations
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Patronymic = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sex = table.Column<int>(type: "int", nullable: false, defaultValue: 2),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     RefreshToken = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ExpirationAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -95,7 +91,7 @@ namespace BILab.DataAccess.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -272,7 +268,10 @@ namespace BILab.DataAccess.Migrations
                     ProcedureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EmployerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AdressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AdressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsClosed = table.Column<bool>(type: "bit", nullable: false),
+                    IsCanceled = table.Column<bool>(type: "bit", nullable: false),
+                    CancelingReasone = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -308,9 +307,9 @@ namespace BILab.DataAccess.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("315959d1-9360-4528-b49c-0eaa789dd2c7"), null, "User", "USER" },
-                    { new Guid("71cda961-c36f-4ac2-97e0-fee37e98fe19"), null, "Admin", "ADMIN" },
-                    { new Guid("9dd77781-11be-4ef7-af5f-a8f484dad584"), null, "Customer", "CUSTOMER" }
+                    { new Guid("10f24f3e-cf6c-4744-a3ad-4af88befdd9e"), null, "User", "USER" },
+                    { new Guid("794afb94-66b1-4a81-8e3a-7ab7e06b915b"), null, "Admin", "ADMIN" },
+                    { new Guid("9df9dc83-7264-49ac-a851-a57095de109f"), null, "Employee", "EMPLOYEE" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -379,6 +378,11 @@ namespace BILab.DataAccess.Migrations
                 name: "EmailIndex",
                 table: "Users",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_IsDeleted",
+                table: "Users",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

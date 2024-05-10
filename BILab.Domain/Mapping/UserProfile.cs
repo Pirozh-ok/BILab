@@ -9,6 +9,7 @@ namespace BILab.Domain.Mapping {
             CreateMap<UpdateUserDTO, User>();
             CreateMap<User, GetUserDTO>();
             CreateMap<UserDTO, UpdateUserDTO>();
+            CreateMap<User, GetShortUserInfoDTO>();
         }
     }
 }

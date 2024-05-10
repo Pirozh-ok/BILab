@@ -65,23 +65,6 @@ namespace BILab.DataAccess.EntitiesConfigurations {
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasIndex(x => x.IsDeleted);
 
-            builder.Property(x => x.CreatedAt)
-                .ValueGeneratedOnUpdateSometimes();
-
-            builder.Property(x => x.CreatedBy)
-                .HasMaxLength(50)
-                .HasDefaultValue(string.Empty)
-                .ValueGeneratedOnUpdateSometimes()
-                .IsRequired();
-
-            builder.Property(x => x.ModifiedBy)
-                .HasMaxLength(50)
-                .HasDefaultValue(string.Empty)
-                .IsRequired();
-
-            builder.Property(x => x.DeletedBy)
-                .HasMaxLength(50)
-                .IsRequired(false);
 
             builder.HasQueryFilter(x => !x.IsDeleted);
         }

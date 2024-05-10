@@ -2,6 +2,7 @@
 using BILab.Domain.Settings;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace BILab.BusinessLogic.Services {
     public class EmailService : IEmailService {
@@ -21,12 +22,12 @@ namespace BILab.BusinessLogic.Services {
                 Text = message
             };
 
-            //using (var client = new SmtpClient()) {
-            //    await client.ConnectAsync(_smtpSettings.Value.SmtpHost, _smtpSettings.Value.SmtpPort, false);
-            //    await client.AuthenticateAsync(_smtpSettings.Value.AdminEmail, _smtpSettings.Value.AdminPassword);
-            //    await client.SendAsync(emailMessage);
-            //    await client.DisconnectAsync(true);
-            //}
+            using (var client = new SmtpClient()) {
+                await client.ConnectAsync(_smtpSettings.Value.SmtpHost, _smtpSettings.Value.SmtpPort, false);
+                await client.AuthenticateAsync(_smtpSettings.Value.AdminEmail, _smtpSettings.Value.AdminPassword);
+                await client.SendAsync(emailMessage);
+                await client.DisconnectAsync(true);
+            }
         }
 
         public async Task SendEmailResultAuthentificationWithGoogle(string email) {

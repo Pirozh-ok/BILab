@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 
 namespace BILab.WebAPI.Controllers {
-    //[Authorize(Roles = Constants.NameRoleAdmin)]
+    [Authorize(Roles = Constants.NameRoleAdmin)]
     public class TypeOfDayController : BaseCrudController<ITypeOfDayService, TypeOfDayDTO, TypeOfDayDTO, Guid> {
         public TypeOfDayController(ITypeOfDayService service) : base(service) {
         }

@@ -12,7 +12,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         }
 
         protected override ServiceResult Validate(AdressDTO dto) {
-            return ServiceResult.Ok();
+            return ServiceResult.Fail("not valid");
         }
     }
 }

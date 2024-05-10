@@ -12,7 +12,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         }
 
         protected override ServiceResult Validate(SheduleDTO dto) {
-            return ServiceResult.Ok();
+            return ServiceResult.Fail("not valid");
         }
     }
 }

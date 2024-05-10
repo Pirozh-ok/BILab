@@ -14,6 +14,8 @@ namespace BILab.Web.Extensions {
             services.AddTransient<IAccessService, AccessService>();
             services.AddTransient<ISpecialOfferService, SpecialOfferService>();
             services.AddTransient<ITypeOfDayService, TypeOfDayService>();
+            services.AddTransient<IRecordService, RecordService>();
+            services.AddTransient<IProcedureService, ProcedureService>();
         }
     }
 }

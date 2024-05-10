@@ -14,7 +14,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         protected override ServiceResult Validate(SpecialOfferDTO dto) {
             // validate 0 < size < 100;
             //validate len Detail
-            return ServiceResult.Ok();
+            return ServiceResult.Fail("not valid");
         }
     }
 }
