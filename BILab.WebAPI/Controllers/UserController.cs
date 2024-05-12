@@ -1,5 +1,6 @@
 ﻿using BILab.Domain;
 using BILab.Domain.Contracts.Services.EntityServices;
+using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.User;
 using BILab.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -9,14 +10,6 @@ using System.Net;
 namespace BILab.WebAPI.Controllers {
     public class UserController : BaseCrudController<IUserService, UserDTO, GetUserDTO, Guid> {
         public UserController(IUserService service) : base(service) {
-        }
-
-        [HttpGet("me")]
-        [Authorize]
-        public async Task<IActionResult> GetMyInfo() {
-            var currentUserId = GetAuthUserId();
-            var result = await _service.GetByIdAsync<GetUserDTO>(Guid.Parse(currentUserId));
-            return GetResult(result, (int)HttpStatusCode.OK);
         }
 
         [HttpPost]
@@ -40,27 +33,11 @@ namespace BILab.WebAPI.Controllers {
             return GetResult(result, (int)HttpStatusCode.OK);
         }
 
-        //[AllowAnonymous]
-        //[HttpGet("search")]
-        //public async Task<IActionResult> GetFilteringUsers([FromQuery]  filters) {
-        //    var result = _service.SearchFor<GetUserDTO>(filters);
-        //    return GetResult(result, (int)HttpStatusCode.OK);
-        //}
-
-        [AllowAnonymous]
-        [HttpPut("change-password")]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordData) {
-            var userId = GetAuthUserId();
-            var result = await _service.ChangePasswordAsync(changePasswordData);
-            return GetResult(result, (int)HttpStatusCode.NoContent);
-        }
-
-        [AllowAnonymous]
-        [HttpPut("change-email")]
-        public async Task<IActionResult> ChangeEmail([FromQuery] string newEmail) {
-            var userId = GetAuthUserId();
-            var result = await _service.ChangeEmailAsync(newEmail);
-            return GetResult(result, (int)HttpStatusCode.NoContent);
+        [Authorize]
+        [HttpGet("search")]
+        public IActionResult GetFilteringUsers([FromQuery] PageableUserRequestDto filters) {
+            var result = _service.SearchFor<GetUserDTO>(filters);
+            return GetResult(result, (int)HttpStatusCode.OK);
         }
     }
 }

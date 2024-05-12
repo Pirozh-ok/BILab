@@ -13,20 +13,6 @@ namespace BILab.WebAPI.Controllers {
             _userService = userService;
         }
 
-        [HttpPost("register")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] UserDTO userDto) {
-            var result = await _userService.CreateAsync(userDto);
-            return GetResult(result, (int)HttpStatusCode.Created);
-        }
-
-        [HttpGet("login")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login([FromQuery] LoginDTO loginData) {
-            var result = await _userService.LoginAsync(loginData);
-            return GetResult(result, (int)HttpStatusCode.OK);
-        }
-
         [HttpPut("confirm-email")]
         public async Task<IActionResult> ConfirmEmail() {
             var result = await _userService.ConfirmEmailAsync();
@@ -51,6 +37,30 @@ namespace BILab.WebAPI.Controllers {
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordData) {
             var result = await _userService.ResetPasswordAsync(resetPasswordData);
+            return GetResult(result, (int)HttpStatusCode.NoContent);
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<IActionResult> GetMyInfo() {
+            var currentUserId = GetAuthUserId();
+            var result = await _userService.GetByIdAsync<GetUserDTO>(Guid.Parse(currentUserId));
+            return GetResult(result, (int)HttpStatusCode.OK);
+        }
+
+        [AllowAnonymous]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordData) {
+            var userId = GetAuthUserId();
+            var result = await _userService.ChangePasswordAsync(changePasswordData);
+            return GetResult(result, (int)HttpStatusCode.NoContent);
+        }
+
+        [AllowAnonymous]
+        [HttpPut("change-email")]
+        public async Task<IActionResult> ChangeEmail([FromQuery] string newEmail) {
+            var userId = GetAuthUserId();
+            var result = await _userService.ChangeEmailAsync(newEmail);
             return GetResult(result, (int)HttpStatusCode.NoContent);
         }
     }

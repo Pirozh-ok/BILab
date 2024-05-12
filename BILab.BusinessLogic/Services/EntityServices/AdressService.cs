@@ -11,8 +11,37 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         public AdressService(ApplicationDbContext context, IMapper mapper) : base(context, mapper) {
         }
 
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string HouseNumber { get; set; }
+        public int ApartmentNumber { get; set; }
+
         protected override ServiceResult Validate(AdressDTO dto) {
-            return ServiceResult.Fail("not valid");
+            var errors = new List<string>();
+
+            if (dto is null) {
+                errors.Add(ResponseConstants.NullArgument);
+                return BuildValidateResult(errors);
+            }
+
+            //name city length
+            //Street length
+            //HouseNumber length
+            //ApartmentNumber > 0 < 100000000000000000000
+
+            //if (dto.Size < Constants.MinSpecialOffer) {
+            //    errors.Add($"Special offer size must be more then {MinSpecialOffer}");
+            //}
+
+            //if (dto.Size > Constants.MaxSpecialOffer) {
+            //    errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
+            //}
+
+            //if (dto.Detail != null && dto.Detail.Length > Constants.MaxLenOfDetail) {
+            //    errors.Add($"Special offer detail length must be less then {Constants.MaxLenOfDetail}");
+            //}
+
+            return BuildValidateResult(errors);
         }
     }
 }

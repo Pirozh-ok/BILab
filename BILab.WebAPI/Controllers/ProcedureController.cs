@@ -1,12 +1,15 @@
 ﻿using BILab.Domain;
 using BILab.Domain.Contracts.Services.EntityServices;
+using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.Procedure;
+using BILab.Domain.DTOs.Record;
 using BILab.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace BILab.WebAPI.Controllers {
+    [Authorize]
     public class ProcedureController : BaseController {
         private readonly IProcedureService _service;
 
@@ -14,15 +17,14 @@ namespace BILab.WebAPI.Controllers {
             _service = service;
         }
 
-        [Authorize(Roles = $"{Constants.NameRoleAdmin},{Constants.NameRoleUser},{Constants.NameRoleEmployee}")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllAsync() {
             var result = await _service.GetAsync<ProcedureDTO>();
             return GetResult(result, (int)HttpStatusCode.OK);
         }
 
-
-        [Authorize(Roles = $"{Constants.NameRoleAdmin},{Constants.NameRoleUser},{Constants.NameRoleEmployee}")]
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id) {
             var result = await _service.GetByIdAsync<ProcedureDTO>(id);
@@ -49,6 +51,13 @@ namespace BILab.WebAPI.Controllers {
         public async Task<IActionResult> UpdateAsync([FromBody] ProcedureDTO updateDto) {
             var result = await _service.UpdateAsync(updateDto);
             return GetResult(result, (int)HttpStatusCode.NoContent);
+        }
+
+        [Authorize]
+        [HttpGet("search")]
+        public IActionResult GetFilteringProcedures([FromQuery] PageableProcedureRequestDto filters) {
+            var result = _service.SearchFor<GetProcedureDTO>(filters);
+            return GetResult(result, (int)HttpStatusCode.OK);
         }
     }
 }

@@ -12,9 +12,26 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         }
 
         protected override ServiceResult Validate(SpecialOfferDTO dto) {
-            // validate 0 < size < 100;
-            //validate len Detail
-            return ServiceResult.Fail("not valid");
+            var errors = new List<string>();
+
+            if (dto is null) {
+                errors.Add(ResponseConstants.NullArgument);
+                return BuildValidateResult(errors);
+            }
+
+            if (dto.Size < Constants.MinSpecialOffer) {
+                errors.Add($"Special offer size must be more then {Constants.MinSpecialOffer}");
+            }
+
+            if (dto.Size > Constants.MaxSpecialOffer) {
+                errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
+            }
+
+            if (dto.Detail != null && dto.Detail.Length > Constants.MaxLenOfDetail) {
+                errors.Add($"Special offer detail length must be less then {Constants.MaxLenOfDetail}");
+            }
+
+            return BuildValidateResult(errors);
         }
     }
 }

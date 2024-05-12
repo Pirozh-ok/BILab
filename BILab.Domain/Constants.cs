@@ -14,5 +14,7 @@
         public const uint MaxMinAge = 18;
         public const int MaxLenOfDetail = 1000;
         public const int MaxLenOfDescription = 1000;
+        public const uint MinSpecialOffer = 1;
+        public const uint MaxSpecialOffer = 100;
     }
 }

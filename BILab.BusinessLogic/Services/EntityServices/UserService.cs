@@ -5,18 +5,17 @@ using BILab.DataAccess;
 using BILab.Domain;
 using BILab.Domain.Contracts.Services;
 using BILab.Domain.Contracts.Services.EntityServices;
-using BILab.Domain.DTOs.Base;
+using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.User;
 using BILab.Domain.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
+using System.Linq.Expressions;
 using System.Web;
 
-namespace BILab.BusinessLogic.Services.EntityServices
-{
-    public class UserService : SearchableEntityService<UserService, User, Guid, UserDTO, PageableBaseRequestDto>, IUserService {
+namespace BILab.BusinessLogic.Services.EntityServices {
+    public class UserService : SearchableEntityService<UserService, User, Guid, UserDTO, PageableUserRequestDto>, IUserService {
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
@@ -175,8 +174,6 @@ namespace BILab.BusinessLogic.Services.EntityServices
                 .Select(x => x.Description)
                 .ToList());
         }
-
-
 
         public async Task<ServiceResult> ConfirmEmailAsync() {
             var userId = _accessService.GetUserIdFromRequest().ToString();
@@ -458,6 +455,28 @@ namespace BILab.BusinessLogic.Services.EntityServices
             }
 
             return BuildValidateResult(errors);
+        }
+
+        protected override List<Expression<Func<User, bool>>> GetAdvancedConditions(PageableUserRequestDto filters) {
+            var conditions = new List<Expression<Func<User, bool>>>();
+
+            if (filters.Sex.HasValue) {
+                conditions.Add(x => x.Sex == filters.Sex);
+            }
+
+            if (filters.AgeFrom is not null) {
+                conditions.Add(x => DateTime.UtcNow.Year - x.DateOfBirth.Year > filters.AgeFrom);
+            }
+
+            if (filters.AgeTo is not null) {
+                conditions.Add(x => DateTime.UtcNow.Year - x.DateOfBirth.Year < filters.AgeTo);
+            }
+
+            return conditions;
+        }
+
+        protected override IQueryable<User> GetEntityByIdIncludes(IQueryable<User> query) {
+            return query;
         }
     }
 }
