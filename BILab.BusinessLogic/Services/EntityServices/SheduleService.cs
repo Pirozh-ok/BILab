@@ -30,26 +30,30 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         protected override ServiceResult Validate(SheduleDTO dto) {
             var errors = new List<string>();
 
-            //FromTime > 0 < 24 and ToTimeTime
-            // UserId user is not null
-            // TypeOfDayId TypeOfDay is not null
-
             if (dto is null) {
                 errors.Add(ResponseConstants.NullArgument);
                 return BuildValidateResult(errors);
             }
 
-            //if (dto.FromTime > ) {
-            //    errors.Add($"Special offer size must be more then {MinSpecialOffer}");
-            //}
+            if (dto.FromTime > 24 || dto.FromTime < 0) {
+                errors.Add($"From time must be in the range from 0 to 24");
+            }
 
-            //if (dto.Size > Constants.MaxSpecialOffer) {
-            //    errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
-            //}
+            if (dto.ToTimeTime > 24 || dto.FromTime < 0) {
+                errors.Add($"To time must be in the range from 0 to 24");
+            }
 
-            //if (dto.Detail != null && dto.Detail.Length > Constants.MaxLenOfDetail) {
-            //    errors.Add($"Special offer detail length must be less then {Constants.MaxLenOfDetail}");
-            //}
+            if (dto.ToTimeTime < dto.FromTime) {
+                errors.Add($"To time must be more than From time");
+            }
+
+            if(_context.Users.SingleOrDefault(x => x.Id == dto.UserId) is null) {
+                errors.Add($"User not found");
+            }
+
+            if (_context.TypesOfDays.SingleOrDefault(x => x.Id == dto.TypeOfDayId) is null) {
+                errors.Add($"Type of day not found");
+            }
 
             return BuildValidateResult(errors);
         }
