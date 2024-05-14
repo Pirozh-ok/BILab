@@ -64,30 +64,34 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         protected override ServiceResult Validate(RecordDTO dto) {
             var errors = new List<string>();
 
-            // Detail length
-            // AdmissionDate < now and 100 let nazad
-            // procedureId procedure is exist
-            // customerId customer is exist
-            // employeeId employee is exist
-            // adressId adress is exist
-            //CancelingReasone is not null then check length
+            if (dto is null) {
+                errors.Add(ResponseConstants.NullArgument);
+                return BuildValidateResult(errors);
+            }
 
-            //if (dto is null) {
-            //    errors.Add(ResponseConstants.NullArgument);
-            //    return BuildValidateResult(errors);
-            //}
+            if (dto.Detail.Length > Constants.MaxLenOfDetail) {
+                errors.Add($"Record detail length must be less then {Constants.MaxLenOfDetail}");
+            }
 
-            //if (dto.Size < Constants.MinSpecialOffer) {
-            //    errors.Add($"Special offer size must be more then {MinSpecialOffer}");
-            //}
+            if (dto.AdmissionDate < DateTime.Now || dto.AdmissionDate > DateTime.Now.AddYears(5)) {
+                errors.Add($"Admission date is incorrect");
+            }
 
-            //if (dto.Size > Constants.MaxSpecialOffer) {
-            //    errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
-            //}
+            if (_context.Procedures.SingleOrDefault(x => x.Id == dto.ProcedureId) is null) {
+                errors.Add($"Procedure not found");
+            }
 
-            //if (dto.Detail != null && dto.Detail.Length > Constants.MaxLenOfDetail) {
-            //    errors.Add($"Special offer detail length must be less then {Constants.MaxLenOfDetail}");
-            //}
+            if (_context.Users.SingleOrDefault(x => x.Id == dto.EmployerId) is null) {
+                errors.Add($"Employee not found");
+            }
+
+            if (_context.Users.SingleOrDefault(x => x.Id == dto.CustomerId) is null) {
+                errors.Add($"Customer not found");
+            }
+
+            if (_context.Adresses.SingleOrDefault(x => x.Id == dto.AdressId) is null) {
+                errors.Add($"Adress not found");
+            }
 
             return BuildValidateResult(errors);
         }

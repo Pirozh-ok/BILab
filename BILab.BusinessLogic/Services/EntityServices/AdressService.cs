@@ -24,22 +24,25 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 return BuildValidateResult(errors);
             }
 
-            //name city length
-            //Street length
-            //HouseNumber length
-            //ApartmentNumber > 0 < 100000000000000000000
+            if(dto.City.Length > Constants.MaxLenOfName) {
+                errors.Add($"City name length must be less then {Constants.MaxLenOfName}");
+            }
 
-            //if (dto.Size < Constants.MinSpecialOffer) {
-            //    errors.Add($"Special offer size must be more then {MinSpecialOffer}");
-            //}
+            if (dto.City.Length < Constants.MinLenOfName) {
+                errors.Add($"City name length must be more then {Constants.MinLenOfName}");
+            }
 
-            //if (dto.Size > Constants.MaxSpecialOffer) {
-            //    errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
-            //}
+            if (dto.Street.Length < Constants.MinLenOfName) {
+                errors.Add($"Street name length must be more then {Constants.MinLenOfName}");
+            }
 
-            //if (dto.Detail != null && dto.Detail.Length > Constants.MaxLenOfDetail) {
-            //    errors.Add($"Special offer detail length must be less then {Constants.MaxLenOfDetail}");
-            //}
+            if (dto.Street.Length > Constants.MaxLenOfName) {
+                errors.Add($"Street name length must be less then {Constants.MaxLenOfName}");
+            }
+
+            if(dto.ApartmentNumber < 0 || dto.ApartmentNumber > 100000000) {
+                errors.Add($"Apartment number must be in the range from 0 to 100000000");
+            }
 
             return BuildValidateResult(errors);
         }

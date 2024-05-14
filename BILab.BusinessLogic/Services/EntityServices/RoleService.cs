@@ -192,7 +192,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 }
             }
 
-            return errors.Count > 0 ? ServiceResult.Fail(errors) : ServiceResult.Ok();
+            return BuildValidateResult(errors);
         }
     }
 }

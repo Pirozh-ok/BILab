@@ -26,17 +26,29 @@ namespace BILab.BusinessLogic.Services.EntityServices {
             //price > 0 < 100000000000000000000
             // specialOfferId is exist
 
-            //if (dto.Size < Constants.MinSpecialOffer) {
-            //    errors.Add($"Special offer size must be more then {MinSpecialOffer}");
-            //}
+            if (dto.Name.Length > Constants.MaxLenOfName) {
+                errors.Add($"Procedure name length must be less then {Constants.MaxLenOfName}");
+            }
 
-            //if (dto.Size > Constants.MaxSpecialOffer) {
-            //    errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
-            //}
+            if (dto.Name.Length < Constants.MinLenOfName) {
+                errors.Add($"Procedure name length must be more then {Constants.MinLenOfName}");
+            }
 
-            //if (dto.Detail != null && dto.Detail.Length > Constants.MaxLenOfDetail) {
-            //    errors.Add($"Special offer detail length must be less then {Constants.MaxLenOfDetail}");
-            //}
+            if (dto.Description.Length > Constants.MaxLenOfDescription) {
+                errors.Add($"Procedure description length must be less then {Constants.MaxLenOfDescription} symbols");
+            }
+
+            if (dto.Type.Length > Constants.MaxLenOfName || dto.Type.Length < Constants.MinLenOfName) {
+                errors.Add($"Type name length must be in the range from {Constants.MinLenOfName} to {Constants.MaxLenOfName}}");
+            }
+
+            if (dto.Price < 0 || dto.Price > 100000000) {
+                errors.Add($"Price size must be in the range from 0 to 100000000");
+            }
+
+            if(dto.SpecialOfferId.HasValue && _context.SpecialOffers.SingleOrDefault(x => x.Id == dto.SpecialOfferId) is null) {
+                errors.Add($"Special offer not found");
+            }
 
             return BuildValidateResult(errors);
         }
