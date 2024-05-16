@@ -43,5 +43,12 @@ namespace BILab.WebAPI.Controllers {
             var result = await _service.GetRecordsByEmployeeId(userId);
             return GetResult(result, (int)HttpStatusCode.OK);
         }
+
+        [Authorize]
+        [HttpPut("close")]
+        public async Task<IActionResult> CloseRecord(CloseRecordDto dto) {
+            var result = await _service.CloseRecord(dto);
+            return GetResult(result, (int)HttpStatusCode.OK);
+        }
     }
 }

@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using BILab.BusinessLogic.Services.Base;
 using BILab.DataAccess;
 using BILab.Domain;
+using BILab.Domain.Contracts.Services;
 using BILab.Domain.Contracts.Services.EntityServices;
 using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.Record;
@@ -12,27 +13,45 @@ using System.Linq.Expressions;
 
 namespace BILab.BusinessLogic.Services.EntityServices {
     public class RecordService : SearchableEntityService<RecordService, Record, Guid, RecordDTO, PageableRecordRequestDto>, IRecordService {
-        public RecordService(ApplicationDbContext context, IMapper mapper) : base(context, mapper) {
+        private readonly IAccessService _accessService;
+        private readonly IEmailService _emailService;
+
+        public RecordService(ApplicationDbContext context,
+            IMapper mapper,
+            IAccessService accessService,
+            IEmailService emailService) : base(context, mapper) {
+            _accessService = accessService;
+            _emailService = emailService;
         }
 
-        public async Task<ServiceResult> CloseRecord(Guid recordId, bool isCanceled = false, string? cancelingReason = null) {
+        public async Task<ServiceResult> CloseRecord(CloseRecordDto closeRecordDto) {
+            var currentUserId = _accessService.GetUserIdFromRequest();
             var record = await _context.Records
-                .SingleOrDefaultAsync(x => x.Id == recordId);
+                .Include(x => x.Customer)
+                .Include(x => x.Procedure)
+                .FirstOrDefaultAsync(x => x.Id == closeRecordDto.RecordId);
 
-            if(record is null) {
+            if (record is null) {
                 return ServiceResult.Fail(ResponseConstants.RecordNotFound);
             }
 
-            if (isCanceled) {
-                record.IsClosed = true;
-                record.IsCanceled = true;
-                record.CancelingReasone = cancelingReason ?? string.Empty;
+            if (currentUserId != record.CustomerId && currentUserId != record.EmployerId && !_accessService.IsAdministatorRequest()) {
+                return ServiceResult.Fail(ResponseConstants.AccessDenied);
             }
-            else {
-                record.IsClosed = true;
+
+            record.IsClosed = true;
+
+            if (closeRecordDto.IsCanceled) {
+                record.IsCanceled = true;
+                record.CancelingReasone = closeRecordDto.CancelingReason ?? string.Empty;
             }
 
             _context.Records.Update(record);
+
+            var customer = record.Customer;
+            var emailText = string.Format(ResponseConstants.RecordWasClosedEmail, $"{customer.LastName} {customer.FirstName}", record.Procedure.Name, record.AdmissionDate.ToString("g"));
+
+            await _emailService.SendEmailAsync(customer.Email, ResponseConstants.SubjectCloseRecord, emailText);
 
             return ServiceResult.Ok(ResponseConstants.RecordWasClosed);
         }
@@ -46,7 +65,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 .ProjectTo<GetFullRecordDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            return ServiceResult.Ok(records); 
+            return ServiceResult.Ok(records);
         }
 
         public async Task<ServiceResult> GetRecordsByUserId(Guid userId) {
