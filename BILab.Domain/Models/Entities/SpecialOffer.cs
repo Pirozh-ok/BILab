@@ -2,15 +2,14 @@
 
 namespace BILab.Domain.Models.Entities {
     public class SpecialOffer : IBaseEntity<Guid> {
-        public SpecialOffer()
-        {
-            Procedures = new HashSet<Procedure>();
+        public SpecialOffer() {
         }
 
         public Guid Id { get; set; }
         public string? Detail { get; set; }
-        public int Size { get; set; }
+        public int NewPrice { get; set; }
+        public Guid? ProcedureId { get; set; }
 
-        public virtual ICollection<Procedure> Procedures { get; set; }
+        public Procedure? Procedure {get; set;}
     }
 }

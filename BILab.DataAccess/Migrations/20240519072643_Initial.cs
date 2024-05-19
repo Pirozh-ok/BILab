@@ -43,16 +43,20 @@ namespace BILab.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SpecialOffers",
+                name: "Procedures",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Detail = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Size = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    SpecialOfferId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpecialOffers", x => x.Id);
+                    table.PrimaryKey("PK_Procedures", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,24 +129,23 @@ namespace BILab.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Procedures",
+                name: "SpecialOffers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    SpecialOfferId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Detail = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    NewPrice = table.Column<int>(type: "int", nullable: false),
+                    ProcedureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Procedures", x => x.Id);
+                    table.PrimaryKey("PK_SpecialOffers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Procedures_SpecialOffers_SpecialOfferId",
-                        column: x => x.SpecialOfferId,
-                        principalTable: "SpecialOffers",
-                        principalColumn: "Id");
+                        name: "FK_SpecialOffers_Procedures_ProcedureId",
+                        column: x => x.ProcedureId,
+                        principalTable: "Procedures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -232,33 +235,6 @@ namespace BILab.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Schedules",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FromTime = table.Column<int>(type: "int", nullable: false),
-                    ToTimeTime = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TypeOfDayId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Schedules", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Schedules_TypesOfDay_TypeOfDayId",
-                        column: x => x.TypeOfDayId,
-                        principalTable: "TypesOfDay",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Schedules_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Records",
                 columns: table => new
                 {
@@ -302,14 +278,41 @@ namespace BILab.DataAccess.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Schedules",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FromTime = table.Column<int>(type: "int", nullable: false),
+                    ToTimeTime = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TypeOfDayId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Schedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Schedules_TypesOfDay_TypeOfDayId",
+                        column: x => x.TypeOfDayId,
+                        principalTable: "TypesOfDay",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Schedules_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("10f24f3e-cf6c-4744-a3ad-4af88befdd9e"), null, "User", "USER" },
-                    { new Guid("794afb94-66b1-4a81-8e3a-7ab7e06b915b"), null, "Admin", "ADMIN" },
-                    { new Guid("9df9dc83-7264-49ac-a851-a57095de109f"), null, "Employee", "EMPLOYEE" }
+                    { new Guid("378b85d2-f5cb-4607-9393-79d3d7d4f775"), null, "Admin", "ADMIN" },
+                    { new Guid("57c73785-7c3e-434f-8eb9-aa5e2e8419ad"), null, "Employee", "EMPLOYEE" },
+                    { new Guid("77bfaa3f-9b74-4708-aeb6-b684975e4b24"), null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -340,11 +343,6 @@ namespace BILab.DataAccess.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Procedures_SpecialOfferId",
-                table: "Procedures",
-                column: "SpecialOfferId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Records_AdressId",
                 table: "Records",
                 column: "AdressId");
@@ -373,6 +371,13 @@ namespace BILab.DataAccess.Migrations
                 name: "IX_Schedules_UserId",
                 table: "Schedules",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SpecialOffers_ProcedureId",
+                table: "SpecialOffers",
+                column: "ProcedureId",
+                unique: true,
+                filter: "[ProcedureId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -417,13 +422,13 @@ namespace BILab.DataAccess.Migrations
                 name: "Schedules");
 
             migrationBuilder.DropTable(
+                name: "SpecialOffers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Adresses");
-
-            migrationBuilder.DropTable(
-                name: "Procedures");
 
             migrationBuilder.DropTable(
                 name: "TypesOfDay");
@@ -432,7 +437,7 @@ namespace BILab.DataAccess.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "SpecialOffers");
+                name: "Procedures");
         }
     }
 }

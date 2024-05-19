@@ -6,16 +6,16 @@ using BILab.Domain.Contracts.Services;
 namespace BILab.Web.Extensions {
     public static class AddServicesExtensions {
         public static void AddUserServices(this IServiceCollection services) {
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IAccessService, AccessService>();
+            services.AddTransient<ITypeOfDayService, TypeOfDayService>();
             services.AddTransient<ISheduleService, SheduleService>();
             services.AddTransient<IAdressService, AdressService>();
             services.AddTransient<IRoleService, RoleServices>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IAccessService, AccessService>();
             services.AddTransient<ISpecialOfferService, SpecialOfferService>();
-            services.AddTransient<ITypeOfDayService, TypeOfDayService>();
-            services.AddTransient<IRecordService, RecordService>();
             services.AddTransient<IProcedureService, ProcedureService>();
+            services.AddTransient<IRecordService, RecordService>();
+            services.AddTransient<IUserService, UserService>();
         }
     }
 }

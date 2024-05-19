@@ -8,5 +8,6 @@ namespace BILab.Domain.DTOs.Procedure {
         public string Type { get; set; }
         public float Price { get; set; }
         public SpecialOfferDTO? SpecialOffer { get; set; }
+        public string? Picture { get; set; }
     }
 }

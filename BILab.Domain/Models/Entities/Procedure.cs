@@ -12,6 +12,7 @@ namespace BILab.Domain.Models.Entities {
         public string Type { get; set; }
         public float Price { get; set; }
         public Guid? SpecialOfferId { get; set; }
+        public string? Picture { get; set; }
 
         public SpecialOffer? SpecialOffer { get; set; }
         public ICollection<Record> Records { get; set; }

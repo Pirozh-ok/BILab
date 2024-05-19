@@ -1,5 +1,6 @@
 ﻿using BILab.Domain.DTOs.Base;
 using BILab.Domain.DTOs.Procedure;
+using BILab.Domain.DTOs.SpecialOffer;
 using BILab.Domain.DTOs.User;
 
 namespace BILab.Domain.DTOs.Record {

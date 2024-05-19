@@ -63,6 +63,9 @@ namespace BILab.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
@@ -74,8 +77,6 @@ namespace BILab.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SpecialOfferId");
 
                     b.ToTable("Procedures");
                 });
@@ -158,19 +159,19 @@ namespace BILab.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("794afb94-66b1-4a81-8e3a-7ab7e06b915b"),
+                            Id = new Guid("378b85d2-f5cb-4607-9393-79d3d7d4f775"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("10f24f3e-cf6c-4744-a3ad-4af88befdd9e"),
+                            Id = new Guid("77bfaa3f-9b74-4708-aeb6-b684975e4b24"),
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = new Guid("9df9dc83-7264-49ac-a851-a57095de109f"),
+                            Id = new Guid("57c73785-7c3e-434f-8eb9-aa5e2e8419ad"),
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -213,10 +214,17 @@ namespace BILab.DataAccess.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("Size")
+                    b.Property<int>("NewPrice")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ProcedureId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProcedureId")
+                        .IsUnique()
+                        .HasFilter("[ProcedureId] IS NOT NULL");
 
                     b.ToTable("SpecialOffers", (string)null);
                 });
@@ -469,15 +477,6 @@ namespace BILab.DataAccess.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUserRole");
                 });
 
-            modelBuilder.Entity("BILab.Domain.Models.Entities.Procedure", b =>
-                {
-                    b.HasOne("BILab.Domain.Models.Entities.SpecialOffer", "SpecialOffer")
-                        .WithMany("Procedures")
-                        .HasForeignKey("SpecialOfferId");
-
-                    b.Navigation("SpecialOffer");
-                });
-
             modelBuilder.Entity("BILab.Domain.Models.Entities.Record", b =>
                 {
                     b.HasOne("BILab.Domain.Models.Entities.Adress", "Adress")
@@ -530,6 +529,16 @@ namespace BILab.DataAccess.Migrations
                     b.Navigation("TypeOfDay");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BILab.Domain.Models.Entities.SpecialOffer", b =>
+                {
+                    b.HasOne("BILab.Domain.Models.Entities.Procedure", "Procedure")
+                        .WithOne("SpecialOffer")
+                        .HasForeignKey("BILab.Domain.Models.Entities.SpecialOffer", "ProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Procedure");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -595,16 +604,13 @@ namespace BILab.DataAccess.Migrations
             modelBuilder.Entity("BILab.Domain.Models.Entities.Procedure", b =>
                 {
                     b.Navigation("Records");
+
+                    b.Navigation("SpecialOffer");
                 });
 
             modelBuilder.Entity("BILab.Domain.Models.Entities.Role", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("BILab.Domain.Models.Entities.SpecialOffer", b =>
-                {
-                    b.Navigation("Procedures");
                 });
 
             modelBuilder.Entity("BILab.Domain.Models.Entities.TypeOfDay", b =>

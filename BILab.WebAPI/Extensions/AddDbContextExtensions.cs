@@ -14,9 +14,11 @@ namespace BILab.Web.Extensions {
         public static async Task SeedDataAsync(this IServiceCollection services) {
             var provider = services.BuildServiceProvider();
             var userManager = provider.GetRequiredService<UserManager<User>>();
+            var context = provider.GetRequiredService<ApplicationDbContext>();
 
-            var seedData = new SeedData(userManager);
+            var seedData = new SeedData(userManager, context);
             await seedData.SeedUsers();
+            //await seedData.SeedProcedures();
         }
     }
 }

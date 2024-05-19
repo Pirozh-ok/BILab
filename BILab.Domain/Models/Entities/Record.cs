@@ -12,7 +12,6 @@ namespace BILab.Domain.Models.Entities {
         public bool IsClosed { get; set; } = false;
         public bool IsCanceled { get; set; } = false;
         public string? CancelingReasone { get; set; }
-
         public Procedure Procedure { get; set; }
         public User Customer { get; set; }
         public User Employer { get; set; }

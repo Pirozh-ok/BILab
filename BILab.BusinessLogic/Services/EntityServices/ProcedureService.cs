@@ -20,12 +20,6 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 return BuildValidateResult(errors);
             }
 
-            //name length
-            //description length
-            //type length
-            //price > 0 < 100000000000000000000
-            // specialOfferId is exist
-
             if (dto.Name.Length > Constants.MaxLenOfName) {
                 errors.Add($"Procedure name length must be less then {Constants.MaxLenOfName}");
             }
@@ -39,7 +33,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
             }
 
             if (dto.Type.Length > Constants.MaxLenOfName || dto.Type.Length < Constants.MinLenOfName) {
-                errors.Add($"Type name length must be in the range from {Constants.MinLenOfName} to {Constants.MaxLenOfName}}");
+                errors.Add($"Type name length must be in the range from {Constants.MinLenOfName} to {Constants.MaxLenOfName}");
             }
 
             if (dto.Price < 0 || dto.Price > 100000000) {

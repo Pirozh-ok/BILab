@@ -2,6 +2,7 @@ using BILab.Domain.Settings;
 using BILab.Web.Extensions;
 using BILab.WebAPI.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtBearerSettings"));
@@ -9,8 +10,8 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 
 // Add services to the container.
 //builder.Services.AddControllersWithViews()
-//    .AddJsonOptions(options =>
-//    options.JsonSerializerOptions.DefaultIgnoreCondition = .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+// .AddJsonOptions(options =>
+// options.JsonSerializerOptions.DefaultIgnoreCondition = .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 //);
 
 builder.Services.AddControllers();
@@ -20,7 +21,16 @@ builder.Services.AddIdentitySettings();
 builder.Services.AddUserServices();
 builder.Services.AddAutoMapper();
 builder.Services.AddSwaggerOptions();
-builder.Services.AddCors();
+
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAllOrigins",
+    builder => {
+        builder.AllowAnyOrigin();
+        builder.AllowAnyHeader();
+        builder.AllowAnyMethod();
+    });
+});
+
 builder.Services.AddOptions();
 
 var jwtSection = builder.Configuration.GetSection("JwtBearerSettings");
@@ -40,13 +50,10 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
-app.UseCors(builder => builder.AllowAnyOrigin()
-    .AllowAnyHeader()
-    .AllowAnyMethod());
+
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.Run();

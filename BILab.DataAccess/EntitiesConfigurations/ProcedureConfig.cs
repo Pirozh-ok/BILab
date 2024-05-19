@@ -16,9 +16,10 @@ namespace BILab.DataAccess.EntitiesConfigurations {
                 .HasMaxLength(Constants.MaxLenOfName);
 
             builder.HasOne(x => x.SpecialOffer)
-                .WithMany(x => x.Procedures)
-                .HasForeignKey(x => x.SpecialOfferId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .WithOne(x => x.Procedure)
+                .HasForeignKey<SpecialOffer>(x => x.ProcedureId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
