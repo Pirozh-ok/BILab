@@ -19,12 +19,8 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 return BuildValidateResult(errors);
             }
 
-            if (dto.NewPrice < Constants.MinSpecialOffer) {
-                errors.Add($"Special offer size must be more then {Constants.MinSpecialOffer}");
-            }
-
-            if (dto.NewPrice > Constants.MaxSpecialOffer) {
-                errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
+            if (dto.NewPrice > 1000000 || dto.NewPrice < 0 ) {
+                errors.Add($"Special offer price is not corrected");
             }
 
             if (dto.Detail != null && dto.Detail.Length > Constants.MaxLenOfDetail) {
