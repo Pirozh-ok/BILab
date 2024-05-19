@@ -11,6 +11,7 @@ using BILab.Domain.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1;
 using System.Linq.Expressions;
 using System.Web;
 
@@ -117,6 +118,16 @@ namespace BILab.BusinessLogic.Services.EntityServices {
             return ServiceResult.Fail(result.Errors
                 .Select(x => x.Description)
                 .ToList());
+        }
+
+        public async Task<ServiceResult> GetEmployeesAsync() {
+            var employees = await _userManager.Users
+                .Where(x => (_userManager.IsInRoleAsync(x, Constants.NameRoleEmployee)).Result)
+                .AsNoTracking()
+                .ProjectTo<UserDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return ServiceResult.Ok(employees);
         }
 
         public async Task<ServiceResult> CreateAdmin(UserDTO dto) {

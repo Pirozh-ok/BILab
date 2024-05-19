@@ -17,5 +17,6 @@ namespace BILab.Domain.Contracts.Services.EntityServices
         Task<ServiceResult> ChangeEmailAsync(string newEmail);
         Task<ServiceResult> CreateAdmin(UserDTO dto);
         Task<ServiceResult> CreateEmployee(UserDTO dto);
+        Task<ServiceResult> GetEmployeesAsync();
     }
 }

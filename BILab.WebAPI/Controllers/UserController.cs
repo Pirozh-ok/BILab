@@ -19,17 +19,24 @@ namespace BILab.WebAPI.Controllers {
             return GetResult(result, (int)HttpStatusCode.Created);
         }
 
-        [HttpPost]
+        [HttpPost("/add-admin")]
         [Authorize(Roles = Constants.NameRoleAdmin)]
         public async Task<IActionResult> CreateAdminAsync(UserDTO dto) {
             var result = await _service.CreateAdmin(dto);
             return GetResult(result, (int)HttpStatusCode.Created);
         }
 
-        [HttpPost]
+        [HttpPost("/add-employee")]
         [Authorize(Roles = Constants.NameRoleAdmin)]
         public async Task<IActionResult> CreateEmployeeAsync(UserDTO dto) {
             var result = await _service.CreateEmployee(dto);
+            return GetResult(result, (int)HttpStatusCode.Created);
+        }
+
+        [HttpPost("/employee")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetEmployees() {
+            var result = await _service.GetEmployeesAsync();
             return GetResult(result, (int)HttpStatusCode.Created);
         }
 
