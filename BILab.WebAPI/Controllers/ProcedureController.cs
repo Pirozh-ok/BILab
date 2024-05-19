@@ -53,7 +53,7 @@ namespace BILab.WebAPI.Controllers {
             return GetResult(result, (int)HttpStatusCode.NoContent);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("search")]
         public IActionResult GetFilteringProcedures([FromQuery] PageableProcedureRequestDto filters) {
             var result = _service.SearchFor<GetProcedureDTO>(filters);

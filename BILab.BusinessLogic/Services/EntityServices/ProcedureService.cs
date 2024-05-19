@@ -6,10 +6,31 @@ using BILab.Domain.Contracts.Services.EntityServices;
 using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.Procedure;
 using BILab.Domain.Models.Entities;
+using System.Linq.Expressions;
 
 namespace BILab.BusinessLogic.Services.EntityServices {
     public class ProcedureService : SearchableEntityService<ProcedureService, Procedure, Guid, ProcedureDTO, PageableProcedureRequestDto>, IProcedureService {
         public ProcedureService(ApplicationDbContext context, IMapper mapper) : base(context, mapper) {
+        }
+
+        protected override List<Expression<Func<Procedure, bool>>> GetAdvancedConditions(PageableProcedureRequestDto filters) {
+            var conditions = new List<Expression<Func<Procedure, bool>>>();
+
+            if (!string.IsNullOrEmpty(filters.SearchText)) {
+                conditions.Add(x => x.Name.ToLower().Contains(filters.SearchText.ToLower())
+                || x.Description.ToLower().Contains(filters.SearchText.ToLower())
+                || x.Type.ToLower().Contains(filters.SearchText.ToLower()));
+            }
+
+            if (filters.MinPrice.HasValue) {
+                conditions.Add(x => x.Price >= filters.MinPrice);
+            }
+
+            if (filters.MaxPrice.HasValue) {
+                conditions.Add(x => x.Price <= filters.MaxPrice);
+            }
+
+            return conditions;
         }
 
         protected override ServiceResult Validate(ProcedureDTO dto) {

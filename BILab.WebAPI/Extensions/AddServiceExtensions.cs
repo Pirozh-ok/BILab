@@ -8,12 +8,13 @@ namespace BILab.Web.Extensions {
         public static void AddUserServices(this IServiceCollection services) {
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IAccessService, AccessService>();
+            services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<ITypeOfDayService, TypeOfDayService>();
-            services.AddTransient<ISheduleService, SheduleService>();
             services.AddTransient<IAdressService, AdressService>();
             services.AddTransient<IRoleService, RoleServices>();
-            services.AddTransient<ISpecialOfferService, SpecialOfferService>();
             services.AddTransient<IProcedureService, ProcedureService>();
+            services.AddTransient<ISheduleService, SheduleService>();
+            services.AddTransient<ISpecialOfferService, SpecialOfferService>();
             services.AddTransient<IRecordService, RecordService>();
             services.AddTransient<IUserService, UserService>();
         }

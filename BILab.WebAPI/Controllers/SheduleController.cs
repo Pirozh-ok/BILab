@@ -2,7 +2,6 @@
 using BILab.Domain.Contracts.Services.EntityServices;
 using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.Shedule;
-using BILab.Domain.DTOs.User;
 using BILab.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,21 @@ namespace BILab.WebAPI.Controllers {
         public SheduleController(ISheduleService service) : base(service) {
         }
 
-        [Authorize]
+        [AllowAnonymous]
+        [HttpGet]
+        public override async Task<IActionResult> GetAllAsync() {
+            var result = await _service.GetAsync<SheduleDTO>();
+            return GetResult(result, (int)HttpStatusCode.OK);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public override async Task<IActionResult> GetByIdAsync(Guid id) {
+            var result = await _service.GetByIdAsync<SheduleDTO>(id);
+            return GetResult(result, (int)HttpStatusCode.OK);
+        }
+
+        [AllowAnonymous]
         [HttpGet("search")]
         public IActionResult GetFilteringShedules([FromQuery] PageableSheduleRequestDto filters) {
             var result = _service.SearchFor<SheduleDTO>(filters);

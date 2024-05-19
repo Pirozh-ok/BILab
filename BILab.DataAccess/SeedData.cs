@@ -34,6 +34,48 @@ namespace BILab.DataAccess {
                     await _userManager.AddToRoleAsync(user, Constants.NameRoleAdmin);
                 }
             }
+
+            var empl1Email = "birkinvlad123@gmail.com";
+            if (_userManager.FindByEmailAsync(empl1Email).Result is null) {
+                var user = new User() {
+                    Email = empl1Email,
+                    EmailConfirmed = true,
+                    FirstName = "Ирина",
+                    LastName = "Бордакова",
+                    Patronymic = "Николаевна",
+                    Sex = Domain.Enums.Sex.Female,
+                    DateOfBirth = new DateTime(1977, 11, 07),
+                    RegisterDate = DateTime.Now,
+                    PhoneNumber = "+79500890504"
+                };
+
+                var result = await _userManager.CreateAsync(user, "password");
+
+                if (result.Succeeded) {
+                    await _userManager.AddToRoleAsync(user, Constants.NameRoleEmployee);
+                }
+            }
+
+            var empl2Email = "birkasanvlad123@gmail.com";
+            if (_userManager.FindByEmailAsync(empl2Email).Result is null) {
+                var user = new User() {
+                    Email = empl2Email,
+                    EmailConfirmed = true,
+                    FirstName = "Светлана",
+                    LastName = "Донская",
+                    Patronymic = "Николаевна",
+                    Sex = Domain.Enums.Sex.Female,
+                    DateOfBirth = new DateTime(1974, 11, 07),
+                    RegisterDate = DateTime.Now,
+                    PhoneNumber = "+79500890504"
+                };
+
+                var result = await _userManager.CreateAsync(user, "password");
+
+                if (result.Succeeded) {
+                    await _userManager.AddToRoleAsync(user, Constants.NameRoleEmployee);
+                }
+            }
         }
 
         public async Task SeedProcedures() {
