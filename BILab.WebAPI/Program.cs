@@ -14,12 +14,12 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 // options.JsonSerializerOptions.DefaultIgnoreCondition = .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 //);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbConnection(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddIdentitySettings();
-builder.Services.AddUserServices();
 builder.Services.AddAutoMapper();
+builder.Services.AddUserServices();
+builder.Services.AddControllers();
 builder.Services.AddSwaggerOptions();
 
 builder.Services.AddCors(options => {

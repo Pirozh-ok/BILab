@@ -10,7 +10,7 @@ using System.Net;
 namespace BILab.WebAPI.Controllers {
     [Authorize(Roles = Constants.NameRoleAdmin)]
     public class SpecialOfferController : BaseCrudController<ISpecialOfferService, SpecialOfferDTO, SpecialOfferDTO, Guid> {
-        public SpecialOfferController(SpecialOfferService service) : base(service) {
+        public SpecialOfferController(ISpecialOfferService service) : base(service) {
         }
 
         [AllowAnonymous]

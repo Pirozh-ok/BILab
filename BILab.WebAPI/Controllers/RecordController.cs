@@ -3,7 +3,6 @@ using BILab.Domain;
 using BILab.Domain.Contracts.Services.EntityServices;
 using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.Record;
-using BILab.Domain.DTOs.User;
 using BILab.WebAPI.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +11,11 @@ using System.Net;
 namespace BILab.WebAPI.Controllers {
     [Authorize]
     public class RecordController : BaseCrudController<IRecordService, RecordDTO, GetShortedRecordDTO, Guid> {
-        public RecordController(RecordService service) : base(service) {
+        public RecordController(IRecordService service) : base(service) {
         }
 
 
-        [Authorize(Roles = Constants.NameRoleUser)]
+        [Authorize(Roles = $"{Constants.NameRoleUser},{Constants.NameRoleAdmin}")]
         [HttpPost]
         public override async Task<IActionResult> CreateAsync([FromBody] RecordDTO createDto) {
             var result = await _service.CreateAsync(createDto);
