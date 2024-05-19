@@ -11,7 +11,6 @@ using BILab.Domain.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Asn1;
 using System.Linq.Expressions;
 using System.Web;
 
@@ -21,6 +20,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
         private readonly IAccessService _accessService;
+        private readonly RoleManager<Role> _roleManager;
         private readonly LinkGenerator _generator;
 
         public UserService(
@@ -30,12 +30,14 @@ namespace BILab.BusinessLogic.Services.EntityServices {
             IAccessService accessService,
             IMapper mapper,
             ApplicationDbContext context,
-            LinkGenerator generator) : base(context, mapper) {
+            LinkGenerator generator,
+            RoleManager<Role> roleManager) : base(context, mapper) {
             _userManager = userManager;
             _tokenService = tokenService;
             _emailService = emailService;
             _accessService = accessService;
             _generator = generator;
+            _roleManager = roleManager;
         }
 
         public async Task<ServiceResult> LoginAsync(LoginDTO dto) {
@@ -108,8 +110,9 @@ namespace BILab.BusinessLogic.Services.EntityServices {
 
             var result = await _userManager.CreateAsync(user, dto.Password);
 
+
             if (result.Succeeded) {
-                await _userManager.AddToRoleAsync(user, Constants.NameRoleUser);
+                await _userManager.AddToRoleAsync(user, Constants.NameRoleEmployee);
                 await SendConfirmationEmailAsync(user, ResponseConstants.TextConfirmEmail);
 
                 return ServiceResult.Ok(ResponseConstants.Created);
@@ -121,13 +124,19 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         }
 
         public async Task<ServiceResult> GetEmployeesAsync() {
-            var employees = await _userManager.Users
-                .Include(x => x.UserRoles)
-                .ThenInclude(x => x.Role)
-                .Where(x => x.UserRoles.Select(x => x.Role.Name).Contains(Constants.NameRoleEmployee))
-                .AsNoTracking()
-                .ProjectTo<UserDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            var employeeRole = _roleManager.FindByNameAsync(Constants.NameRoleEmployee).Result;
+
+            var users = await _userManager.Users
+            .AsNoTracking()
+            .ToListAsync();
+
+            var employees = new List<UserDTO>();
+
+            foreach (var user in users) {
+                if (_userManager.IsInRoleAsync(user, Constants.NameRoleEmployee).Result) {
+                    employees.Add(_mapper.Map<UserDTO>(user));
+                }
+            }
 
             return ServiceResult.Ok(employees);
         }
