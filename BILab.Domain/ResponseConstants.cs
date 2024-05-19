@@ -19,6 +19,7 @@
         public const string NameLessMinLen = "Invalid name value. The minimum length of the name  is 2";
         public const string IdIsRequired = "Id is required";
         public const string IncorrectedSex = "Sex is incorrected";
+        public const string IncorrectedDay = "Date of day is ncorrected";
         public const string IncorrectPhoneNumber = "Phone number is incorrected";
         public const string IncorrectDateOfBirth = "Incorrect date of birth value";
         public const string InvalidEmailOrPassword = "Invalid email address or password";

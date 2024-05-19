@@ -5,6 +5,7 @@ namespace BILab.Domain.Models.Entities {
         public Guid Id { get; set; }
         public int FromTime { get; set; }
         public int ToTimeTime { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
 
         public Guid UserId { get; set; }
         public Guid TypeOfDayId { get; set; }

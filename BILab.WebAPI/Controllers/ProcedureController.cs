@@ -31,6 +31,20 @@ namespace BILab.WebAPI.Controllers {
             return GetResult(result, (int)HttpStatusCode.OK);
         }
 
+        [AllowAnonymous]
+        [HttpGet("/sales")]
+        public async Task<IActionResult> GetAllSalesAsync() {
+            var result = await _service.GetSalesAsync();
+            return GetResult(result, (int)HttpStatusCode.OK);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("sales/{id}")]
+        public async Task<IActionResult> GetSaleByIdAsync(Guid id) {
+            var result = await _service.GetSaleByIdAsync(id);
+            return GetResult(result, (int)HttpStatusCode.OK);
+        }
+
 
         [Authorize(Roles = Constants.NameRoleAdmin)]
         [HttpPost]

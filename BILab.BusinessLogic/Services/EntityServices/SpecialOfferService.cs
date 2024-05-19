@@ -19,11 +19,11 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 return BuildValidateResult(errors);
             }
 
-            if (dto.Size < Constants.MinSpecialOffer) {
+            if (dto.NewPrice < Constants.MinSpecialOffer) {
                 errors.Add($"Special offer size must be more then {Constants.MinSpecialOffer}");
             }
 
-            if (dto.Size > Constants.MaxSpecialOffer) {
+            if (dto.NewPrice > Constants.MaxSpecialOffer) {
                 errors.Add($"Special offer size must be less then {Constants.MaxSpecialOffer}");
             }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BILab.BusinessLogic.Services.Base;
 using BILab.DataAccess;
 using BILab.Domain;
@@ -6,6 +7,8 @@ using BILab.Domain.Contracts.Services.EntityServices;
 using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.Procedure;
 using BILab.Domain.Models.Entities;
+using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1;
 using System.Linq.Expressions;
 
 namespace BILab.BusinessLogic.Services.EntityServices {
@@ -66,6 +69,29 @@ namespace BILab.BusinessLogic.Services.EntityServices {
             }
 
             return BuildValidateResult(errors);
+        }
+
+        public async Task<ServiceResult> GetSalesAsync() {
+            var sales = await _context.Procedures
+                .Include(x => x.SpecialOffer)
+                .Where(x => x.SpecialOffer != null)
+                .AsNoTracking()
+                .ProjectTo<GetSalesDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return ServiceResult.Ok(sales);
+        }
+
+        public async Task<ServiceResult> GetSaleByIdAsync(Guid saleId) {
+            var sale = await _context.Procedures
+                .Include(x => x.SpecialOffer)
+                .Where(x => x.SpecialOffer != null)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(x => x.SpecialOfferId == saleId);
+
+            return sale is not null ?
+                ServiceResult.Ok(_mapper.Map<GetSalesDTO>(sale)) :
+                ServiceResult.Fail(ResponseConstants.NotFound);
         }
     }
 }

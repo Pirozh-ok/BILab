@@ -15,5 +15,7 @@ namespace BILab.Domain.Contracts.Services.EntityServices
         Task<ServiceResult> ResetPasswordAsync(ResetPasswordDTO resetPasswordData);
         Task<ServiceResult> ChangePasswordAsync(ChangePasswordDTO changePasswordData);
         Task<ServiceResult> ChangeEmailAsync(string newEmail);
+        Task<ServiceResult> CreateAdmin(UserDTO dto);
+        Task<ServiceResult> CreateEmployee(UserDTO dto);
     }
 }

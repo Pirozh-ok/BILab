@@ -109,14 +109,35 @@ namespace BILab.BusinessLogic.Services.EntityServices {
 
             if (result.Succeeded) {
                 await _userManager.AddToRoleAsync(user, Constants.NameRoleUser);
-                //await SendConfirmationEmailAsync(user, ResponseConstants.TextConfirmEmail);
+                await SendConfirmationEmailAsync(user, ResponseConstants.TextConfirmEmail);
 
-                return ServiceResult.Ok(
-                    new AuthResponseDTO<GetUserDTO> {
-                        Data = _mapper.Map<GetUserDTO>(user),
-                        AccessToken = await _tokenService.GenerateAccessToken(user),
-                        RefreshToken = refreshToken.Token.ToString()
-                    });
+                return ServiceResult.Ok(ResponseConstants.Created);
+            }
+
+            return ServiceResult.Fail(result.Errors
+                .Select(x => x.Description)
+                .ToList());
+        }
+
+        public async Task<ServiceResult> CreateAdmin(UserDTO dto) {
+            var validationResult = Validate(dto);
+
+            if (validationResult.Failure) {
+                return validationResult;
+            }
+
+            var user = _mapper.Map<User>(dto);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshToken = refreshToken.Token;
+            user.ExpirationAt = refreshToken.ExpirationDate;
+
+            var result = await _userManager.CreateAsync(user, dto.Password);
+
+            if (result.Succeeded) {
+                await _userManager.AddToRoleAsync(user, Constants.NameRoleAdmin);
+                await SendConfirmationEmailAsync(user, ResponseConstants.TextConfirmEmail);
+
+                return ServiceResult.Ok(ResponseConstants.Created);
             }
 
             return ServiceResult.Fail(result.Errors

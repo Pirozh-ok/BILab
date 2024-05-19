@@ -55,6 +55,10 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 errors.Add($"Type of day not found");
             }
 
+            if ((int)dto.DayOfWeek < 0 || (int)dto.DayOfWeek > 6) {
+                errors.Add(ResponseConstants.IncorrectedDay);
+            }
+
             return BuildValidateResult(errors);
         }
     }

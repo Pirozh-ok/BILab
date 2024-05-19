@@ -12,6 +12,7 @@ namespace BILab.Domain.Mapping {
                 opt => opt.MapFrom(
                     src => $"{src.Adress.City}, {src.Adress.Street}, {src.Adress.HouseNumber}, {src.Adress.ApartmentNumber}")
                 );
+            CreateMap<Record, GetShortedRecordDTO>();
         }
     }
 }
