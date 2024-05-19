@@ -122,7 +122,9 @@ namespace BILab.BusinessLogic.Services.EntityServices {
 
         public async Task<ServiceResult> GetEmployeesAsync() {
             var employees = await _userManager.Users
-                .Where(x => (_userManager.IsInRoleAsync(x, Constants.NameRoleEmployee)).Result)
+                .Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role)
+                .Where(x => x.UserRoles.Select(x => x.Role.Name).Contains(Constants.NameRoleEmployee))
                 .AsNoTracking()
                 .ProjectTo<UserDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();

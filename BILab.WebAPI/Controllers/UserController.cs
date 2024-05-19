@@ -12,43 +12,43 @@ namespace BILab.WebAPI.Controllers {
         public UserController(IUserService service) : base(service) {
         }
 
-        [HttpPost]
         [AllowAnonymous]
+        [HttpPost]
         public override async Task<IActionResult> CreateAsync(UserDTO dto) {
             var result = await _service.CreateAsync(dto);
             return GetResult(result, (int)HttpStatusCode.Created);
         }
 
-        [HttpPost("/add-admin")]
         [Authorize(Roles = Constants.NameRoleAdmin)]
+        [HttpPost("/add-admin")]
         public async Task<IActionResult> CreateAdminAsync(UserDTO dto) {
             var result = await _service.CreateAdmin(dto);
             return GetResult(result, (int)HttpStatusCode.Created);
         }
 
-        [HttpPost("/add-employee")]
         [Authorize(Roles = Constants.NameRoleAdmin)]
+        [HttpPost("/add-employee")]
         public async Task<IActionResult> CreateEmployeeAsync(UserDTO dto) {
             var result = await _service.CreateEmployee(dto);
             return GetResult(result, (int)HttpStatusCode.Created);
         }
 
-        [HttpPost("/employee")]
         [AllowAnonymous]
+        [HttpGet("/allEmployee")]
         public async Task<IActionResult> GetEmployees() {
             var result = await _service.GetEmployeesAsync();
             return GetResult(result, (int)HttpStatusCode.Created);
         }
 
-        [HttpGet]
         [Authorize(Roles = Constants.NameRoleAdmin)]
+        [HttpGet]
         public override async Task<IActionResult> GetAllAsync() {
             var result = await _service.GetAsync<GetUserDTO>();
             return GetResult(result, (int)HttpStatusCode.OK);
         }
 
-        [HttpGet("{userId}")]
         [Authorize(Roles = Constants.NameRoleAdmin)]
+        [HttpGet("{userId}")]
         public override async Task<IActionResult> GetByIdAsync(Guid userId) {
             var result = await _service.GetByIdAsync<GetUserDTO>(userId);
             return GetResult(result, (int)HttpStatusCode.OK);
