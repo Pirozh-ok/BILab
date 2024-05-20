@@ -81,6 +81,8 @@ namespace BILab.BusinessLogic.Services.EntityServices {
 
             foreach (var procedure in procedures) {
                 if (procedure.SpecialOfferId != null) {
+                    var specialOffer = await _context.SpecialOffers.SingleOrDefaultAsync(x => x.Id == procedure.SpecialOfferId);
+                    procedure.SpecialOffer = specialOffer;
                     sales.Add(_mapper.Map<GetSalesDTO>(procedure));
                 }
             }
@@ -96,6 +98,8 @@ namespace BILab.BusinessLogic.Services.EntityServices {
 
             foreach (var procedure in procedures) {
                 if (procedure.SpecialOfferId != null && procedure.Id == saleId) {
+                    var specialOffer = await _context.SpecialOffers.SingleOrDefaultAsync(x => x.Id == procedure.SpecialOfferId);
+                    procedure.SpecialOffer = specialOffer;
                     return ServiceResult.Ok(_mapper.Map<GetSalesDTO>(procedure));
                 }
             }
