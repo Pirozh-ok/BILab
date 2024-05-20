@@ -72,26 +72,35 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         }
 
         public async Task<ServiceResult> GetSalesAsync() {
-            var sales = await _context.Procedures
-                .Include(x => x.SpecialOffer)
-                .Where(x => x.SpecialOffer != null)
-                .AsNoTracking()
-                .ProjectTo<GetSalesDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            var procedures = await _context.Procedures
+            .Include(x => x.SpecialOffer)
+            .AsNoTracking()
+            .ToListAsync();
+
+            var sales = new List<GetSalesDTO>();
+
+            foreach (var procedure in procedures) {
+                if (procedure.SpecialOfferId != null) {
+                    sales.Add(_mapper.Map<GetSalesDTO>(procedure));
+                }
+            }
 
             return ServiceResult.Ok(sales);
         }
 
         public async Task<ServiceResult> GetSaleByIdAsync(Guid saleId) {
-            var sale = await _context.Procedures
-                .Include(x => x.SpecialOffer)
-                .Where(x => x.SpecialOffer != null)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(x => x.SpecialOfferId == saleId);
+            var procedures = await _context.Procedures
+            .Include(x => x.SpecialOffer)
+            .AsNoTracking()
+            .ToListAsync();
 
-            return sale is not null ?
-                ServiceResult.Ok(_mapper.Map<GetSalesDTO>(sale)) :
-                ServiceResult.Fail(ResponseConstants.NotFound);
+            foreach (var procedure in procedures) {
+                if (procedure.SpecialOfferId != null && procedure.Id == saleId) {
+                    return ServiceResult.Ok(_mapper.Map<GetSalesDTO>(procedure));
+                }
+            }
+
+            return ServiceResult.Fail(ResponseConstants.NotFound);
         }
     }
 }

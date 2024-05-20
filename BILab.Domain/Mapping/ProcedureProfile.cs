@@ -11,7 +11,7 @@ namespace BILab.Domain.Mapping {
                 .ForMember(
                 dest => dest.NewPrice,
                 opt => opt.MapFrom(
-                    src => $"{src.SpecialOffer.NewPrice}")
+                    src => src.SpecialOffer.NewPrice)
                 )
                 .ForMember(
                 dest => dest.Detail,

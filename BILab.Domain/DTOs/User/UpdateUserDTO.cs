@@ -7,6 +7,7 @@ namespace BILab.Domain.DTOs.User {
         public string LastName { get; set; }
         public string? Patronymic { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string? AvatarPath { get; set; }
         public string? PhoneNumber { get; set; }
     }
 }
