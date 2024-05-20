@@ -8,5 +8,6 @@ namespace BILab.Domain.DTOs.Record {
         public Guid CustomerId { get; set; }
         public Guid EmployerId { get; set; }
         public Guid AdressId { get; set; }
+        public bool IsSpecialOffer { get; set; }
     }
 }

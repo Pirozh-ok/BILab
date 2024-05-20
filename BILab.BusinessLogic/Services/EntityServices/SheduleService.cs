@@ -13,6 +13,38 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         public SheduleService(ApplicationDbContext context, IMapper mapper) : base(context, mapper) {
         }
 
+        public class Window { 
+            public int FromTime { get; init; }
+            public int ToTome { get; init; }
+        }
+
+        public ServiceResult GetFreeShedule(Guid employeeId, DayOfWeek day) {
+            var record = _context.Records
+                .Where(x => x.EmployerId == employeeId && x.AdmissionDate.DayOfWeek == day)
+                .ToList();
+
+            var scheduleEmployee = _context.Shedules
+                .FirstOrDefault(x => x.DayOfWeek == day);
+
+            if(scheduleEmployee is null) {
+                return ServiceResult.Fail("Not work in this day");
+            }
+
+            var recordHours = record.Select(x => x.AdmissionDate.Hour).ToList();
+            var result = new List<Window>();
+
+            for(int i = scheduleEmployee.FromTime; i < scheduleEmployee.ToTimeTime - 1; i++) {
+                if (!recordHours.Contains(i)) {
+                    result.Add(new Window() {
+                        FromTime = i,
+                        ToTome = i + 1
+                    });
+                }
+            }
+
+            return ServiceResult.Ok(new List<Window>());
+        }
+
         protected override List<Expression<Func<Shedule, bool>>> GetAdvancedConditions(PageableSheduleRequestDto filters) {
             var conditions = new List<Expression<Func<Shedule, bool>>>();
 

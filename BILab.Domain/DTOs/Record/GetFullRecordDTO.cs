@@ -14,5 +14,6 @@ namespace BILab.Domain.DTOs.Record {
         public bool IsClosed { get; set; } = false;
         public bool IsCanceled { get; set; } = false;
         public string? CancelingReasone { get; set; }
+        public bool IsSpecialOffer { get; set; }
     }
 }

@@ -33,5 +33,12 @@ namespace BILab.WebAPI.Controllers {
             var result = _service.SearchFor<SheduleDTO>(filters);
             return GetResult(result, (int)HttpStatusCode.OK);
         }
+
+        [Authorize]
+        [HttpGet("/{employeeId}")]
+        public IActionResult GetFreeSchedule(Guid employeeId, [FromQuery] DayOfWeek dayOfWeek) {
+            var result = _service.GetFreeShedule(employeeId, dayOfWeek);
+            return GetResult(result, (int)HttpStatusCode.OK);
+        }
     }
 }
