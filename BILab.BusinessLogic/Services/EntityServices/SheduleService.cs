@@ -6,6 +6,7 @@ using BILab.Domain.Contracts.Services.EntityServices;
 using BILab.Domain.DTOs.Pageable;
 using BILab.Domain.DTOs.Shedule;
 using BILab.Domain.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace BILab.BusinessLogic.Services.EntityServices {
@@ -13,27 +14,39 @@ namespace BILab.BusinessLogic.Services.EntityServices {
         public SheduleService(ApplicationDbContext context, IMapper mapper) : base(context, mapper) {
         }
 
-        public class Window { 
+        public class Window {
             public int FromTime { get; init; }
             public int ToTome { get; init; }
         }
 
-        public ServiceResult GetFreeShedule(Guid employeeId, DayOfWeek day) {
-            var record = _context.Records
-                .Where(x => x.EmployerId == employeeId && x.AdmissionDate.DayOfWeek == day)
+        public async Task<ServiceResult> GetScheduleByEmployee(Guid employeeId) {
+            var schedules = await _context.Shedules
+                .Where(x => x.UserId == employeeId)
+                .ToListAsync();
+
+            return schedules.Count > 0 ? ServiceResult.Ok(schedules) : ServiceResult.Fail("Schedules not found");
+        }
+
+        public async Task<ServiceResult> GetFreeShedule(Guid employeeId, DateTime checkData) {
+            var record = await _context.Records
+            .Where(x => x.EmployerId == employeeId)
+            .ToListAsync();
+
+            record = record
+                .Where(x => x.AdmissionDate == checkData)
                 .ToList();
 
-            var scheduleEmployee = _context.Shedules
-                .FirstOrDefault(x => x.DayOfWeek == day);
+            var scheduleEmployee = await _context.Shedules
+            .FirstOrDefaultAsync(x => x.DayOfWeek == checkData.DayOfWeek && x.UserId == employeeId);
 
-            if(scheduleEmployee is null) {
+            if (scheduleEmployee is null) {
                 return ServiceResult.Fail("Not work in this day");
             }
 
             var recordHours = record.Select(x => x.AdmissionDate.Hour).ToList();
             var result = new List<Window>();
 
-            for(int i = scheduleEmployee.FromTime; i < scheduleEmployee.ToTimeTime - 1; i++) {
+            for (int i = scheduleEmployee.FromTime; i < scheduleEmployee.ToTimeTime; i++) {
                 if (!recordHours.Contains(i)) {
                     result.Add(new Window() {
                         FromTime = i,
@@ -42,7 +55,7 @@ namespace BILab.BusinessLogic.Services.EntityServices {
                 }
             }
 
-            return ServiceResult.Ok(new List<Window>());
+            return ServiceResult.Ok(result);
         }
 
         protected override List<Expression<Func<Shedule, bool>>> GetAdvancedConditions(PageableSheduleRequestDto filters) {
