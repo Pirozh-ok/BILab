@@ -36,8 +36,8 @@ namespace BILab.WebAPI.Controllers {
 
         [Authorize]
         [HttpGet("/{employeeId}")]
-        public async Task<IActionResult> GetFreeSchedule(Guid employeeId, [FromQuery] DateTime dayOfWeek) {
-            var result = await _service.GetFreeShedule(employeeId, dayOfWeek);
+        public async Task<IActionResult> GetFreeSchedule(Guid employeeId, [FromQuery] DateTime checkData) {
+            var result = await _service.GetFreeShedule(employeeId, checkData);
             return GetResult(result, (int)HttpStatusCode.OK);
         }
 
